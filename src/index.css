@@ -1,0 +1,83 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300..900;1,300..900&display=swap');
+
+@theme {
+  --font-sans: 'Exo 2', sans-serif;
+  --font-display: 'Exo 2', sans-serif;
+  --font-mono: 'Exo 2', sans-serif;
+}
+
+@layer base {
+  *, ::before, ::after {
+    font-family: 'Exo 2', sans-serif !important;
+  }
+
+  html, body {
+    font-family: 'Exo 2', sans-serif !important;
+    background-color: #000000;
+    color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, span, a, div, li, td, th, label, button, input, optgroup, select, textarea, .font-display, .font-sans, .font-mono {
+    font-family: 'Exo 2', sans-serif !important;
+  }
+}
+
+:root {
+  --forces-btn: #f1b331;
+  --forces-btn-hover: #dfa222;
+  --forces-bg: #000000;
+  --forces-yellow: #f1b331;
+}
+
+/* Règle absolue : toutes les bulles sans exception ont un contour jaune #f1b331 de 2px */
+.rounded-3xl,
+.rounded-2xl,
+.rounded-xl,
+.rounded-lg,
+[class*="rounded-3xl"],
+[class*="rounded-2xl"],
+[class*="rounded-xl"],
+[class*="rounded-lg"],
+.bulle {
+  border-width: 2px !important;
+  border-color: #f1b331 !important;
+  border-style: solid !important;
+}
+
+/* Exceptions explicites demandées par l'utilisateur : pas de contour sur FORCES.CA ni sur le conteneur des 3 boutons de navigation (Test, Simulateur, Métiers) */
+.forces-logo-btn,
+.forces-logo-btn *,
+.nav-tab-container,
+.nav-tab-container *,
+nav[aria-label="Navigation principale"],
+nav[aria-label="Navigation principale"] * {
+  border: none !important;
+  border-width: 0 !important;
+}
+
+/* Print styles for recruitment file export */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .rounded-3xl,
+  .rounded-2xl,
+  .rounded-xl,
+  .rounded-lg,
+  [class*="rounded-3xl"],
+  [class*="rounded-2xl"],
+  [class*="rounded-xl"],
+  [class*="rounded-lg"],
+  .bulle {
+    border: 1px solid #cbd5e1 !important;
+  }
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "FAC RIASEC - Orientation Métiers Militaires",
+  "description": "Plateforme d'évaluation psychométrique RIASEC et d'orientation vers les métiers et carrières des Forces armées canadiennes (FAC/CAF).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
