@@ -14,6 +14,7 @@ import { RiasecRadarChart } from './RiasecRadarChart';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
 import { MosidBadge } from './MosidBadge';
+import { TriadBadge } from './TriadBadge';
 import { 
   Shield, 
   Printer, 
@@ -810,9 +811,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                           </div>
                         </td>
                         <td className="py-3.5 px-4">
-                          <span className="font-mono font-bold text-slate-950 bg-[#f1b331] px-2 py-0.5 rounded text-xs shadow-2xs">
-                            {m.trade.riasecCode}
-                          </span>
+                          <TriadBadge code={m.trade.riasecCode} size="sm" />
                         </td>
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-2">
@@ -997,9 +996,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                         <span className="text-slate-600 font-mono">
                           {language === 'en' ? 'RIASEC Code:' : 'Code RIASEC :'}
                         </span>
-                        <span className="text-slate-950 font-bold font-mono tracking-wider bg-[#f1b331] px-1.5 py-0.5 rounded text-[10px]">
-                          {m.trade.riasecCode}
-                        </span>
+                        <TriadBadge code={m.trade.riasecCode} size="sm" />
                       </div>
                     </div>
                   </div>

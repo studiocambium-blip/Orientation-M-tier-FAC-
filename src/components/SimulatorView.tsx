@@ -13,6 +13,7 @@ import { RiasecRadarChart } from './RiasecRadarChart';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
 import { MosidBadge } from './MosidBadge';
+import { TriadBadge } from './TriadBadge';
 import { 
   Sliders, 
   RotateCcw, 
@@ -394,8 +395,10 @@ export const SimulatorView: React.FC<SimulatorViewProps> = ({
                 </p>
 
                 <div className="bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs mb-3 flex items-center justify-between">
-                  <span className="text-slate-500 font-mono">Profil RIASEC cible :</span>
-                  <span className="text-slate-950 font-bold font-mono bg-[#f1b331] px-1.5 py-0.5 rounded">{m.trade.riasecCode}</span>
+                  <span className="text-slate-500 font-mono">
+                    {language === 'en' ? 'Target RIASEC Profile:' : 'Profil RIASEC cible :'}
+                  </span>
+                  <TriadBadge code={m.trade.riasecCode} size="sm" />
                 </div>
 
                 <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">

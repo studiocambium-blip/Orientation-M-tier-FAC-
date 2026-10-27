@@ -4,6 +4,7 @@ import { MILITARY_TRADES } from '../data/militaryTrades';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
 import { MosidBadge } from './MosidBadge';
+import { TriadBadge } from './TriadBadge';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   Search, 
@@ -219,20 +220,18 @@ export const TradesDirectoryView: React.FC<TradesDirectoryViewProps> = ({
                 className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between hover:border-slate-400 transition-all shadow-2xs group"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2.5">
-                    <div className="flex items-center gap-1.5 text-xs font-mono text-slate-800">
+                  <div className="flex items-start justify-between gap-3 mb-2.5 min-h-[28px]">
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-slate-800 flex-1 min-w-0">
                       <BranchIcon branch={trade.branch} inBlack={true} className="w-7 h-5 text-black shrink-0" />
-                      <span className="font-bold text-slate-900">{getBranchName(trade.branch)}</span>
-                      <span className="text-[10px] font-black text-black bg-slate-200 border border-slate-300 px-1.5 py-0.5 rounded font-mono">
+                      <span className="font-bold text-slate-900 truncate">{getBranchName(trade.branch)}</span>
+                      <span className="text-[10px] font-black text-black bg-slate-200 border border-slate-300 px-1.5 py-0.5 rounded font-mono shrink-0">
                         {getBranchShortCode(trade.branch)}
                       </span>
-                      <span aria-hidden="true" className="text-slate-400">·</span>
-                      <MosidBadge code={trade.mosid} className="text-slate-500" />
+                      <span aria-hidden="true" className="text-slate-400 shrink-0">·</span>
+                      <MosidBadge code={trade.mosid} className="text-slate-500 shrink-0" />
                     </div>
 
-                    <span className="text-xs font-mono font-bold text-slate-950 bg-[#f1b331] px-2 py-0.5 rounded shadow-2xs">
-                      {trade.riasecCode}
-                    </span>
+                    <TriadBadge code={trade.riasecCode} className="shrink-0" />
                   </div>
 
                   <h3 className="text-lg font-bold text-slate-900 font-display group-hover:text-amber-600 transition-colors">

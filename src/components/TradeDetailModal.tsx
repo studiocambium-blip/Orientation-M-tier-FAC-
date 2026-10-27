@@ -4,6 +4,7 @@ import { RIASEC_DIMENSIONS } from '../data/riasecData';
 import { RiasecRadarChart } from './RiasecRadarChart';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
 import { MosidBadge } from './MosidBadge';
+import { TriadBadge } from './TriadBadge';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   X, 
@@ -120,7 +121,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
                 {language === 'en' ? 'Ideal RIASEC Profile for this Occupation' : 'Profil RIASEC Idéal pour ce métier'}
               </div>
               <div className="text-xl font-bold text-slate-900 font-mono flex items-center gap-2 mb-4">
-                {language === 'en' ? 'Holland Code:' : 'Code Holland :'} <span className="bg-[#f1b331] text-slate-950 px-2 py-0.5 rounded tracking-wider font-extrabold">{trade.riasecCode}</span>
+                {language === 'en' ? 'Holland Code:' : 'Code Holland :'} <TriadBadge code={trade.riasecCode} size="lg" />
               </div>
 
               <div className="space-y-2.5">
