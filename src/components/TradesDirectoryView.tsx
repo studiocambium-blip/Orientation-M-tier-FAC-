@@ -3,6 +3,7 @@ import { MilitaryTrade, RiasecScores, MilitaryBranch } from '../types/riasec';
 import { MILITARY_TRADES } from '../data/militaryTrades';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
+import { MosidBadge } from './MosidBadge';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   Search, 
@@ -226,7 +227,7 @@ export const TradesDirectoryView: React.FC<TradesDirectoryViewProps> = ({
                         {getBranchShortCode(trade.branch)}
                       </span>
                       <span aria-hidden="true" className="text-slate-400">·</span>
-                      <span className="text-slate-500">MOSID {trade.mosid}</span>
+                      <MosidBadge code={trade.mosid} className="text-slate-500" />
                     </div>
 
                     <span className="text-xs font-mono font-bold text-slate-950 bg-[#f1b331] px-2 py-0.5 rounded shadow-2xs">

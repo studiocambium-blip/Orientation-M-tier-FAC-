@@ -2759,7 +2759,7 @@ export const MILITARY_TRADES: MilitaryTrade[] = [
   },
   {
     "id": "techniciens-de-soutien-des-operations-aeriennes",
-    "mosid": "01235",
+    "mosid": "00386",
     "nameFr": "Technicien·ne de soutien aux opérations aériennes",
     "nameEn": "Air Operations Support Technician",
     "forcesSlug": "techniciens-de-soutien-des-operations-aeriennes",

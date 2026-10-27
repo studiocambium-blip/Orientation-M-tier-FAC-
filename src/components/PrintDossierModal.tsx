@@ -3,6 +3,7 @@ import { RiasecScores, MatchResult } from '../types/riasec';
 import { RIASEC_DIMENSIONS } from '../data/riasecData';
 import { getHollandTriad, getHollandConsistency, getDominantMatches, HEXAGON_ORDER } from '../utils/riasecMatching';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
+import { MosidBadge } from './MosidBadge';
 import { useLanguage } from '../context/LanguageContext';
 import { Printer, X, ShieldCheck, CheckSquare, Award, ExternalLink, Sparkles } from 'lucide-react';
 
@@ -219,7 +220,7 @@ export const PrintDossierModal: React.FC<PrintDossierModalProps> = ({
                           <span>Élément : <strong>{m.trade.branch} ({getBranchShortCode(m.trade.branch)})</strong></span>
                         </span>
                         <span>·</span>
-                        <span>MOSID : <strong>{m.trade.mosid}</strong></span>
+                        <MosidBadge code={m.trade.mosid} className="text-slate-700" />
                         <span>·</span>
                         <span>Rang : <strong>{m.trade.rankCategory}</strong></span>
                         <span>·</span>

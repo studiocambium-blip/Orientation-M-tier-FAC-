@@ -3,6 +3,7 @@ import { MilitaryTrade, RiasecScores, RiasecDimension } from '../types/riasec';
 import { RIASEC_DIMENSIONS } from '../data/riasecData';
 import { RiasecRadarChart } from './RiasecRadarChart';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
+import { MosidBadge } from './MosidBadge';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   X, 
@@ -75,7 +76,7 @@ export const TradeDetailModal: React.FC<TradeDetailModalProps> = ({
               </span>
             </span>
             <span aria-hidden="true" className="text-slate-400">·</span>
-            <span className="font-semibold text-slate-600">MOSID {trade.mosid}</span>
+            <MosidBadge code={trade.mosid} className="font-semibold text-slate-600" />
             <span aria-hidden="true" className="text-slate-400">·</span>
             <span className="text-slate-600">{getRankName(trade.rankCategory)}</span>
           </div>

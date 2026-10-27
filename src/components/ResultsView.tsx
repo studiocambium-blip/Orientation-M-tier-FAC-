@@ -13,6 +13,7 @@ import {
 import { RiasecRadarChart } from './RiasecRadarChart';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
+import { MosidBadge } from './MosidBadge';
 import { 
   Shield, 
   Printer, 
@@ -227,7 +228,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                     {getBranchShortCode(selectedTrades[0].trade.branch)}
                   </span>
                   <span aria-hidden="true" className="text-slate-400">·</span>
-                  <span className="text-slate-500 font-normal">MOSID {selectedTrades[0].trade.mosid}</span>
+                  <MosidBadge code={selectedTrades[0].trade.mosid} className="text-slate-500 font-normal" />
                   <span aria-hidden="true" className="text-slate-400">·</span>
                   <span className="text-slate-600 font-normal">{getRankName(selectedTrades[0].trade.rankCategory)}</span>
                 </div>
@@ -285,7 +286,7 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                       <BranchIcon branch={item.trade.branch} inBlack={true} className="w-7 h-5 text-black shrink-0" />
                       <span className="font-semibold text-slate-800 truncate">{getBranchName(item.trade.branch)}</span>
                       <span className="text-slate-400">·</span>
-                      <span>MOSID {item.trade.mosid}</span>
+                      <MosidBadge code={item.trade.mosid} className="text-slate-500" />
                     </div>
 
                     <h3 className="font-bold text-slate-900 text-sm font-display line-clamp-1">
@@ -790,8 +791,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                           <div className="font-bold text-slate-900 font-display">
                             {getTradeName(m.trade)}
                           </div>
-                          <div className="text-xs text-slate-500 italic">
-                            {language === 'en' ? m.trade.nameFr : m.trade.nameEn} · MOSID {m.trade.mosid}
+                          <div className="text-xs text-slate-500 italic flex items-center gap-1.5 flex-wrap">
+                            <span>{language === 'en' ? m.trade.nameFr : m.trade.nameEn}</span>
+                            <span aria-hidden="true">·</span>
+                            <MosidBadge code={m.trade.mosid} className="not-italic text-slate-500 font-normal" />
                           </div>
                         </td>
                         <td className="py-3.5 px-4">
@@ -970,8 +973,10 @@ export const ResultsView: React.FC<ResultsViewProps> = ({
                       </div>
                     </div>
 
-                    <div className="text-[10px] text-slate-500 font-mono mb-1">
-                      MOSID {m.trade.mosid} · <span className="text-slate-700 font-medium">{getRankName(m.trade.rankCategory)}</span>
+                    <div className="text-[10px] text-slate-500 font-mono mb-1 flex items-center gap-1.5 flex-wrap">
+                      <MosidBadge code={m.trade.mosid} className="text-slate-500 font-normal" />
+                      <span aria-hidden="true" className="text-slate-400">·</span>
+                      <span className="text-slate-700 font-medium">{getRankName(m.trade.rankCategory)}</span>
                     </div>
 
                     {/* Title */}

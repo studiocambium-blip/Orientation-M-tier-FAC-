@@ -12,6 +12,7 @@ import {
 import { RiasecRadarChart } from './RiasecRadarChart';
 import { TradeDetailModal } from './TradeDetailModal';
 import { BranchIcon, getBranchShortCode } from './BranchIcon';
+import { MosidBadge } from './MosidBadge';
 import { 
   Sliders, 
   RotateCcw, 
@@ -368,7 +369,7 @@ export const SimulatorView: React.FC<SimulatorViewProps> = ({
                       {getBranchShortCode(m.trade.branch)}
                     </span>
                     <span aria-hidden="true" className="text-slate-300">·</span>
-                    <span className="text-slate-500 shrink-0 text-[10px]">MOSID {m.trade.mosid}</span>
+                    <MosidBadge code={m.trade.mosid} className="text-slate-500 shrink-0 text-[10px]" />
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
                     {m.tier === 'dominant' && (
