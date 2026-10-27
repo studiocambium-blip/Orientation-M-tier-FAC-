@@ -49,6 +49,8 @@ export const translations = {
     interestDegreeTitle: "Votre degré d’intérêt pour cette activité :",
     previous: "Précédente",
     next: "Suivante",
+    selectAnswerToAdvance: "Sélectionnez une réponse pour continuer",
+    answerToFinish: "Répondez à cette question pour terminer",
     finishAndSeeMatches: "Terminer & voir mes métiers correspondants",
 
     // Likert Options
@@ -282,6 +284,8 @@ export const translations = {
     interestDegreeTitle: "Your level of interest in this activity:",
     previous: "Previous",
     next: "Next",
+    selectAnswerToAdvance: "Select an answer to advance",
+    answerToFinish: "Answer this question to finish",
     finishAndSeeMatches: "Complete Assessment & View Matching Occupations",
 
     // Likert Options

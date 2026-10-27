@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Question, RiasecDimension, RiasecScores } from '../types/riasec';
 import { RIASEC_QUESTIONS, RIASEC_DIMENSIONS, RESPONSE_OPTIONS } from '../data/riasecData';
 import { calculateScoresFromAnswers } from '../utils/riasecMatching';
@@ -26,6 +26,8 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
   const [answers, setAnswers] = useState<Record<number, number>>(initialAnswers);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [showDimensionGuide, setShowDimensionGuide] = useState<boolean>(false);
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState<boolean>(false);
+  const autoAdvanceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalQuestions = RIASEC_QUESTIONS.length;
   const currentQuestion = RIASEC_QUESTIONS[currentIndex];
@@ -33,6 +35,7 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
 
   const answeredCount = Object.keys(answers).length;
   const progressPercent = Math.round((answeredCount / totalQuestions) * 100);
+  const isCurrentAnswered = answers[currentQuestion.id] !== undefined;
 
   // Keyboard navigation support
   useEffect(() => {
@@ -41,7 +44,10 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
         const val = parseInt(e.key, 10);
         handleSelectAnswer(currentQuestion.id, val);
       } else if (e.key === 'ArrowRight' && currentIndex < totalQuestions - 1) {
-        setCurrentIndex((prev) => prev + 1);
+        // Can only advance forward if the current question is answered
+        if (answers[currentQuestion.id] !== undefined) {
+          setCurrentIndex((prev) => prev + 1);
+        }
       } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
         setCurrentIndex((prev) => prev - 1);
       }
@@ -49,27 +55,44 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentIndex, currentQuestion]);
+  }, [currentIndex, currentQuestion, answers]);
+
+  // Reset auto-advancing flag on question switch and clear pending timer
+  useEffect(() => {
+    setIsAutoAdvancing(false);
+    return () => {
+      if (autoAdvanceTimerRef.current) {
+        clearTimeout(autoAdvanceTimerRef.current);
+      }
+    };
+  }, [currentIndex]);
 
   const handleSelectAnswer = (questionId: number, value: number) => {
+    if (autoAdvanceTimerRef.current) {
+      clearTimeout(autoAdvanceTimerRef.current);
+    }
     const nextAnswers = { ...answers, [questionId]: value };
     setAnswers(nextAnswers);
 
     if (currentIndex < totalQuestions - 1) {
-      setTimeout(() => {
+      setIsAutoAdvancing(true);
+      autoAdvanceTimerRef.current = setTimeout(() => {
         setCurrentIndex((prev) => prev + 1);
-      }, 150);
+      }, 180);
     }
   };
 
   const handleFinish = () => {
-    const finalAnswers: Record<number, number> = { ...answers };
-    for (const q of RIASEC_QUESTIONS) {
-      if (!finalAnswers[q.id]) {
-        finalAnswers[q.id] = 3;
+    // If any question is unanswered, navigate to it first
+    const unansweredQuestion = RIASEC_QUESTIONS.find((q) => answers[q.id] === undefined);
+    if (unansweredQuestion) {
+      const idx = RIASEC_QUESTIONS.findIndex((q) => q.id === unansweredQuestion.id);
+      if (idx !== -1) {
+        setCurrentIndex(idx);
+        return;
       }
     }
-    const computedScores = calculateScoresFromAnswers(finalAnswers);
+    const computedScores = calculateScoresFromAnswers(answers);
     onCompleteTest(computedScores);
   };
 
@@ -340,7 +363,7 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
 
           {/* Question Index & Dimension Dots */}
           <div className="flex flex-col items-center gap-1.5">
-            <span className="text-xs font-mono font-bold text-slate-800 bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">
+            <span className="text-xs font-mono font-bold text-black bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">
               {t('questionNumber')} {currentIndex + 1} / {totalQuestions}
             </span>
             <div className="hidden sm:flex items-center gap-1">
@@ -348,16 +371,24 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
                 const qIdx = RIASEC_QUESTIONS.findIndex((item) => item.id === q.id);
                 const isAns = answers[q.id] !== undefined;
                 const isCurr = qIdx === currentIndex;
+                const canNavigate = isAns || qIdx <= currentIndex;
                 return (
                   <button
                     key={q.id}
-                    onClick={() => setCurrentIndex(qIdx)}
+                    onClick={() => {
+                      if (canNavigate) {
+                        setCurrentIndex(qIdx);
+                      }
+                    }}
+                    disabled={!canNavigate}
                     className={`h-2 rounded-full transition-all ${
                       isCurr
                         ? 'w-5 bg-[#f1b331]'
                         : isAns
                         ? 'w-2 bg-emerald-600'
-                        : 'w-2 bg-slate-300 hover:bg-slate-400'
+                        : canNavigate
+                        ? 'w-2 bg-slate-300 hover:bg-slate-400'
+                        : 'w-2 bg-slate-200 cursor-not-allowed opacity-50'
                     }`}
                     title={`${t('questionNumber')} ${qIdx + 1} (${q.dimension})`}
                   />
@@ -366,16 +397,22 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-h-[40px]">
             {currentIndex < totalQuestions - 1 ? (
-              <button
-                onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
-                className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-colors"
-              >
-                <span>{t('next')}</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            ) : (
+              !isAutoAdvancing && isCurrentAnswered ? (
+                <button
+                  onClick={() => setCurrentIndex((prev) => Math.min(totalQuestions - 1, prev + 1))}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition-colors shadow-2xs"
+                >
+                  <span>{t('next')}</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <span className="text-xs font-medium text-slate-400 italic px-2 py-1 bg-slate-50 border border-dashed border-slate-200 rounded-lg">
+                  {t('selectAnswerToAdvance')}
+                </span>
+              )
+            ) : isCurrentAnswered ? (
               <button
                 onClick={handleFinish}
                 className="flex items-center gap-1.5 px-5 py-2.5 bg-[#f1b331] hover:bg-[#dfa222] text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md hover:scale-105"
@@ -383,6 +420,10 @@ export const RiasecTestView: React.FC<RiasecTestViewProps> = ({
                 <CheckCircle className="w-4 h-4" />
                 <span>{t('finishAndSeeMatches')}</span>
               </button>
+            ) : (
+              <span className="text-xs font-medium text-slate-400 italic px-2 py-1 bg-slate-50 border border-dashed border-slate-200 rounded-lg">
+                {t('answerToFinish')}
+              </span>
             )}
           </div>
         </div>
